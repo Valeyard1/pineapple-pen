@@ -1,63 +1,30 @@
 package main
 
 import (
-	"github.com/gotk3/gotk3/cairo"
-	"github.com/gotk3/gotk3/gdk"
-	"log"
-
+	"github.com/gotk3/gotk3/glib"
 	"github.com/gotk3/gotk3/gtk"
+	"github.com/valeyard1/pineapple-pen/pkg/callbacks"
+	"github.com/valeyard1/pineapple-pen/pkg/utils"
+	"os"
 )
 
-var unitSize = 5.0
-var x = 0.0
-var y = 0.0
-
-func drawWindow(da *gtk.DrawingArea, cr *cairo.Context) {
-	cr.SetSourceRGB(0, 0, 0)
-	cr.Rectangle(x, y, unitSize, unitSize)
-	cr.Fill()
-}
-
-func clicked(win *gtk.Window, ev *gdk.Event) bool {
-	evMotion := gdk.EventMotionNewFromEvent(ev)
-	xFromEvent, yFromEvent := evMotion.MotionVal()
-	x, y = xFromEvent, yFromEvent
-	win.QueueDraw()
-
-	return false
-}
-
-func setupWindow(title string) *gtk.Window {
-	Width, Height := 640, 480
-
-	win, err := gtk.WindowNew(gtk.WINDOW_TOPLEVEL)
-	if err != nil {
-		log.Fatal("Unable to create window:", err)
-	}
-	win.SetTitle("Pineapple Pen")
-	win.SetPosition(gtk.WIN_POS_CENTER)
-	win.SetDefaultSize(Width, Height)
-
-	drawArea, _ := gtk.DrawingAreaNew()
-
-	win.Connect("destroy", gtk.MainQuit)
-
-	drawArea.Connect("draw", drawWindow)
-	win.Connect("button-press-event", clicked)
-
-	win.Add(drawArea)
-	win.ShowAll()
-	return win
-}
-
-
+const (
+	appID = "com.github.valeyard1.pineapple-pen"
+)
 
 func main() {
-	gtk.Init(nil)
+	application, err := gtk.ApplicationNew(appID, glib.APPLICATION_FLAGS_NONE)
+	utils.ErrorCheck("Failed to create application: ", err)
 
-	win := setupWindow("Go Example Drawing area mouse event")
+	signals := map[string]interface{}{
+		"startup": callbacks.Startup,
+		"activate": callbacks.Activate,
+		"shutdown": callbacks.Shutdown,
+	}
 
-	win.ShowAll()
+	application.Connect("startup", signals["startup"])
+	application.Connect("activate", signals["activate"])
+	application.Connect("shutdown", signals["shutdown"])
 
-	gtk.Main()
+	os.Exit(application.Run(os.Args))
 }
