@@ -20,4 +20,7 @@ There's some features that needs to be implemented:
 * Undo
 * Erase
 
-The project structure is following [this](https://github.com/golang-standards/project-layout) layout, so I think the struct won't be a problem.
+The project structure is following [this](https://github.com/golang-standards/project-layout) layout, so I think the struct won't be a problem.  
+Where to start: callbacks.go, that's the main file, where all the important stuff is.
+
+
