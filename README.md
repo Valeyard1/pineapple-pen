@@ -6,13 +6,12 @@ If you are confused, one famous program with the same purpose is [Epic Pen](http
 
 
 ### Features
-The only feature available in the moment is drawing on the screen moving the mouse. Like the image below.
-![feature-example](./img/example.png)
+The only feature available in the moment is drawing on the screen moving the mouse. But with some delay, I don't know why.
 
 ### Download
 ```
-git clone https://github.com/Valeyard1/pineapple-pen.git
-go run cmd/pineapple-pen/main.go
+git clone https://github.com/Valeyard1/pineapple-pen.git && cd pineapple-pen
+cargo run
 ```
 ## Contributing
 There's some features that needs to be implemented:
@@ -20,7 +19,11 @@ There's some features that needs to be implemented:
 * Undo
 * Erase
 
-The project structure is following [this](https://github.com/golang-standards/project-layout) layout, so I think the struct won't be a problem.  
-Where to start: callbacks.go, that's the main file, where all the important stuff is.
+## Where should I begin contributing?
+As the program grows, I'll create issues with subjects you can help, but for now,
+you need to have a minimum knowledge in GTK (how it works, signals and callbacks functions, etc.),
+after that, you will probably understand the `src/main.rs` file, then you can try to develop a callback function
+in the _src/callbacks.rs_
 
+At first I tried to write this with Go, but all the GTK libraries in Go aren't finished, you can see it [here](https://github.com/Valeyard1/pineapple-pen/commit/d15205f1744000a632f6b087c784dcb2dc8c40ba)
 
